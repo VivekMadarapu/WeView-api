@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.vvk.social</groupId>
     <artifactId>social-app</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>social-app</name>
     <description>social-app</description>
     <properties>
@@ -29,7 +29,6 @@
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.9.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

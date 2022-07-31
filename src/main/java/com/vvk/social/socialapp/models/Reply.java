@@ -4,14 +4,13 @@ import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
-@Table(name="POST")
-public class Post {
+@Table(name = "REPLY")
+public class Reply {
+
     @Id
-    @Column(name="POST_ID")
+    @Column(name = "REPLY_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long postId;
-    @Column(name="TITLE")
-    private String title;
+    private long replyId;
     @Column(name="AUTHOR")
     private String author;
     @Column(name="CONTENT")
@@ -21,33 +20,12 @@ public class Post {
     @Column(name="LIKES")
     private int likes;
 
-    /* Reply tree format:
-        {
-id in db -> "1":"1", <- placement in reply tree
-            "2":"2", <- Ex. second reply
-            "3":"2.1", <- Ex. first subreply of reply 2
-            "4":"2.2"  <- Ex. second subreply of reply 2
-            "5":"2.1.1", <- Ex. first subreply of first subreply of reply 2
-            etc...
-        }
-     */
-    @Column(name="REPLIES")
-    private String replies;
-
-    public long getPostId() {
-        return postId;
+    public long getReplyId() {
+        return replyId;
     }
 
-    public void setPostId(long postId) {
-        this.postId = postId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+    public void setReplyId(long replyId) {
+        this.replyId = replyId;
     }
 
     public String getAuthor() {
@@ -82,24 +60,14 @@ id in db -> "1":"1", <- placement in reply tree
         this.likes = likes;
     }
 
-    public String getReplies() {
-        return replies;
-    }
-
-    public void setReplies(String replies) {
-        this.replies = replies;
-    }
-
     @Override
     public String toString() {
-        return "Post{" +
-                "postId=" + postId +
-                ", title='" + title + '\'' +
+        return "Reply{" +
+                "replyId=" + replyId +
                 ", author='" + author + '\'' +
                 ", content='" + content + '\'' +
                 ", date=" + date +
                 ", likes=" + likes +
-                ", replies='" + replies + '\'' +
                 '}';
     }
 }
