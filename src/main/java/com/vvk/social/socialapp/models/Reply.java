@@ -19,6 +19,8 @@ public class Reply {
     private Date date;
     @Column(name="LIKES")
     private int likes;
+    @Column(name="DELETED")
+    private boolean deleted;
 
     public long getReplyId() {
         return replyId;
@@ -58,6 +60,14 @@ public class Reply {
 
     public void setLikes(int likes) {
         this.likes = likes;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     @Override

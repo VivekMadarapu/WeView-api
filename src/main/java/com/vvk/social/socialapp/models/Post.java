@@ -23,11 +23,11 @@ public class Post {
 
     /* Reply tree format:
         {
-id in db -> "1":"1", <- placement in reply tree
-            "2":"2", <- Ex. second reply
-            "3":"2.1", <- Ex. first subreply of reply 2
-            "4":"2.2"  <- Ex. second subreply of reply 2
-            "5":"2.1.1", <- Ex. first subreply of first subreply of reply 2
+reply id -> "1":"1", <- placement in reply tree
+in db       "2":"2", <- second reply
+            "3":"2.1", <- first subreply of reply 2
+            "4":"2.2"  <- second subreply of reply 2
+            "5":"2.1.1", <- first subreply of first subreply of reply 2
             etc...
         }
      */
