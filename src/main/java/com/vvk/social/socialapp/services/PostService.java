@@ -19,6 +19,7 @@ public class PostService {
 
     PostRepository postRepository;
     ReplyRepository replyRepository;
+    Gson gson = new Gson();
 
     public PostService(PostRepository postRepository, ReplyRepository replyRepository) {
         this.postRepository = postRepository;
@@ -31,13 +32,44 @@ public class PostService {
         return posts;
     }
 
-    public List<Reply> getReplies(Long postId) throws NoSuchElementException {
+    public Set<Long> getReplyIdsForPost(Long postId) throws NoSuchElementException{
         Post post = postRepository.findById(postId).get(); //throws NoSuchElementException if post is not found
-        Gson gson = new Gson();
         JsonObject json = gson.toJsonTree(post.getReplies()).getAsJsonObject();
-        Set<Long> replyIds = json.keySet().stream().map(Long::valueOf).collect(Collectors.toSet());
+        return json.keySet().stream().map(Long::valueOf).collect(Collectors.toSet());
+    }
 
-        return replyRepository.findAllById(replyIds);
+    public List<Reply> getRepliesForPost(Long postId) throws NoSuchElementException {
+        return replyRepository.findAllById(getReplyIdsForPost(postId));
+    }
+
+    public Post addPost(Post post) {
+        return postRepository.save(post);
+    }
+
+    public Post updatePost(Long id, String title, String content) {
+        Post post = postRepository.getReferenceById(id);
+        if (!title.isEmpty())
+            post.setTitle(title);
+        if (!content.isEmpty())
+            post.setContent(content);
+
+        return postRepository.save(post);
+    }
+
+    public Post updatePostReplies(Long postId, String newReplies) {
+        Post post = postRepository.getReferenceById(postId);
+        JsonObject json = gson.fromJson(post.getReplies(), JsonObject.class);
+        JsonObject newReplyData = gson.fromJson(newReplies, JsonObject.class);
+        json.addProperty(newReplyData.get("id").getAsString(), newReplyData.get("path").getAsString());
+
+        post.setReplies(json.getAsString());
+        return postRepository.save(post);
+    }
+
+    public void deletePost(Long postId) throws NoSuchElementException {
+        Set<Long> replyIds = getReplyIdsForPost(postId);
+        postRepository.deleteById(postId);
+        replyRepository.deleteAllById(replyIds);
     }
 
 }
