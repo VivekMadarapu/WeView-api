@@ -9,8 +9,10 @@ import com.vvk.social.socialapp.services.ReplyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -26,12 +28,13 @@ public class WebServiceController {
 
     @GetMapping("/posts")
     public List<Post> getPosts() {
-        return postService.getPosts();
+        return postService.getPosts().stream().sorted(Comparator.comparing(Post::getDate)).collect(Collectors.toList());
     }
 
     @PostMapping("/posts")
     @ResponseStatus(HttpStatus.CREATED)
     public void addPost(@RequestBody Post post) {
+        System.out.println(post);
         postService.addPost(post);
     }
 
@@ -41,11 +44,6 @@ public class WebServiceController {
         JsonObject data = gson.fromJson(json, JsonObject.class);
         if(data.has("title") && data.has("content"))
             postService.updatePost(data.get("id").getAsLong(), data.get("title").getAsString(),data.get("content").getAsString());
-        if(data.has("replies"))
-            /* format
-                {"id": id, "path": path}
-             */
-            postService.updatePostReplies(data.get("id").getAsLong(), data.get("replies").getAsString());
     }
 
     @DeleteMapping("/posts")

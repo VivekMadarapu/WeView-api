@@ -1,5 +1,8 @@
 package com.vvk.social.socialapp.models;
 
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.sql.Date;
 
@@ -20,19 +23,6 @@ public class Post {
     private Date date;
     @Column(name="LIKES")
     private int likes;
-
-    /* Reply tree format:
-        {
-reply id -> "1":"1", <- placement in reply tree
-in db       "2":"2", <- second reply
-            "3":"2.1", <- first subreply of reply 2
-            "4":"2.2"  <- second subreply of reply 2
-            "5":"2.1.1", <- first subreply of first subreply of reply 2
-            etc...
-        }
-     */
-    @Column(name="REPLIES")
-    private String replies;
 
     public long getPostId() {
         return postId;
@@ -82,14 +72,6 @@ in db       "2":"2", <- second reply
         this.likes = likes;
     }
 
-    public String getReplies() {
-        return replies;
-    }
-
-    public void setReplies(String replies) {
-        this.replies = replies;
-    }
-
     @Override
     public String toString() {
         return "Post{" +
@@ -99,7 +81,6 @@ in db       "2":"2", <- second reply
                 ", content='" + content + '\'' +
                 ", date=" + date +
                 ", likes=" + likes +
-                ", replies='" + replies + '\'' +
                 '}';
     }
 }

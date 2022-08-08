@@ -21,6 +21,8 @@ public class Reply {
     private int likes;
     @Column(name="DELETED")
     private boolean deleted;
+    @Column(name = "PATH")
+    private String path;
 
     public long getReplyId() {
         return replyId;
@@ -70,6 +72,13 @@ public class Reply {
         this.deleted = deleted;
     }
 
+    public String getPath() {
+        return path;
+    }
+    public void setPath(String path) {
+        this.path = path;
+    }
+
     @Override
     public String toString() {
         return "Reply{" +
@@ -78,6 +87,8 @@ public class Reply {
                 ", content='" + content + '\'' +
                 ", date=" + date +
                 ", likes=" + likes +
+                ", deleted=" + deleted +
+                ", path='" + path + '\'' +
                 '}';
     }
 }
